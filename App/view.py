@@ -165,7 +165,10 @@ while True:
     elif int(inputs[0]) == 4:
         authorname = input("Nombre del autor a buscar: ")
         authorinfo = controller.getBooksByAuthor(cont, authorname)
+        answer = controller.getBooksYear(cont, int(number))
         printAuthorData(authorinfo)
+        print("Tiempo [ms]: ", f"{answer[1]:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{answer[2]:.3f}")
 
     elif int(inputs[0]) == 5:
         label = input("Etiqueta a buscar: ")
