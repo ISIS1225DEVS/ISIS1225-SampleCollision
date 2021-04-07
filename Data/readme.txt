@@ -1,1 +1,3 @@
-En este directorio van los datos de prueba de los proyectos
+Integrantes del grupo:
+
+Julian Camilo Rivera Monroy - 202013338
