@@ -79,15 +79,27 @@ def printBooksbyTag(books):
         print("No se econtraron libros.\n")
 
 
-def printBooksbyYear(books):
+def printBooksbyYear(answer):
     """
     Imprime los libros que han sido publicados en un
     año
     """
-    if(books):
-        print('Se encontraron: ' + str(lt.size(books)) + ' Libros')
+    if isinstance(answer, (list, tuple)) is True:
+        if len(answer) == 2:
+            books = answer[0]
+            time = answer[1]
+            print('Se encontraron: ' + str(lt.size(books)) + ' Libros.')
+            print("Tiempo [ms]: ", f"{time:.3f}")
+        elif len(answer) == 3:
+            books = answer[0]
+            time = answer[1]
+            memory = answer[2]
+            print('Se encontraron: ' + str(lt.size(books)) + ' Libros.')
+            print('Tiempo [ms]: ', f"{time:.3f}", '||',
+                  'Memoria [kB]: ', f"{memory:.3f}")
         for book in lt.iterator(books):
-            print(book['title'])
+            print('Titulo: ' + book['title'] + '  ISBN: ' +
+                  book['isbn'] + ' Rating: ' + book['average_rating'])
         print("\n")
     else:
         print("No se encontraron libros.\n")
@@ -98,15 +110,48 @@ def printBestBooks(books):
     Imprime la información de los mejores libros
     por promedio
     """
-    size = lt.size(books)
-    if size:
-        print(' Estos son los mejores libros: ')
-        for book in lt.iterator(books):
-            print('Titulo: ' + book['title'] + '  ISBN: ' +
-                  book['isbn'] + ' Rating: ' + book['average_rating'])
-        print("\n")
+    if isinstance(answer, (list, tuple)) is True:
+        if len(answer) == 2:
+            books = answer[0]
+            time = answer[1]
+            print("Tiempo [ms]: ", f"{time:.3f}")
+        elif len(answer) == 3:
+            books = answer[0]
+            time = answer[1]
+            memory = answer[2]
+            print('Tiempo [ms]: ', f"{time:.3f}", '||',
+                  'Memoria [kB]: ', f"{memory:.3f}")
+        size = lt.size(books)
+        if size:
+            print(' Estos son los mejores libros: ')
+            for book in lt.iterator(books):
+                print('Titulo:', book['title'],
+                      'ISBN:', book['isbn'],
+                      'Rating:', book['average_rating'])
+            print("\n")
     else:
-        print('No se encontraron libros.\n')
+        print("No se encontraron libros.\n")
+
+
+def printLoadDataAnswer(answer):
+    """
+    Imprime los datos de tiempo y memoria de la carga de datos
+    """
+    if isinstance(answer, (list, tuple)) is True:
+        print("Tiempo [ms]: ", f"{answer[0]:.3f}", "||",
+              "Memoria [kB]: ", f"{answer[1]:.3f}")
+    else:
+        print("Tiempo [ms]: ", f"{answer:.3f}")
+
+
+def castBoolean(value):
+    """
+    Convierte un valor a booleano
+    """
+    if value in ('True', 'true', 'TRUE', 'T', 't', '1', 1, True):
+        return True
+    else:
+        return False
 
 
 # Menu de opciones
@@ -155,22 +200,25 @@ while True:
         ctrlr = newController()
 
     elif int(inputs[0]) == 2:
-        # TODO: modificaciones para observar el tiempo y memoria
+        # TODO: lab 7, parametros para observar el tiempo y memoria
         print("Cargando información de los archivos ....")
-        answer = controller.loadData(ctrlr)
+        print("Desea observar el uso de memoria? (True/False)")
+        mem = input("Respuesta: ")
+        mem = castBoolean(mem)
+        answer = controller.loadData(ctrlr, memflag=mem)
         print('Libros cargados: ' + str(controller.booksSize(ctrlr)))
         print('Autores cargados: ' + str(controller.authorsSize(ctrlr)))
         print('Géneros cargados: ' + str(controller.tagsSize(ctrlr)))
-        print("Tiempo [ms]: ", f"{answer[0]:.3f}", "||",
-              "Memoria [kB]: ", f"{answer[1]:.3f}")
+        printLoadDataAnswer(answer)
 
     elif int(inputs[0]) == 3:
-        # TODO: modificaciones para observar el tiempo y memoria
+        # TODO: lab 7, parametros observar el tiempo y memoria
         number = input("Buscando libros del año?: ")
-        answer = controller.getBooksYear(ctrlr, int(number))
-        printBooksbyYear(answer[0])
-        print("Tiempo [ms]: ", f"{answer[1]:.3f}", "||",
-              "Memoria [kB]: ", f"{answer[2]:.3f}")
+        print("Desea observar el uso de memoria? (True/False)")
+        mem = input("Respuesta: ")
+        mem = castBoolean(mem)
+        answer = controller.getBooksYear(ctrlr, int(number), memflag=mem)
+        printBooksbyYear(answer)
 
     elif int(inputs[0]) == 4:
         authorname = input("Nombre del autor a buscar: ")
@@ -187,8 +235,11 @@ while True:
         rank = input("Cuantos libros en el escalafon? (mayor a 0): ")
         number = int(number)
         rank = int(rank)
-        answer = controller.sortBooksByYear(ctrlr, number, rank)
-        # TODO completar cambios para el laboratorio 7
+        print("Desea observar el uso de memoria? (True/False)")
+        mem = input("Respuesta: ")
+        mem = castBoolean(mem)
+        answer = controller.sortBooksByYear(ctrlr, number, rank, memflag=mem)
+        # TODO lab 7, completar cambios para imprimir respuesta
         printBestBooks(answer)
 
     elif int(inputs[0]) == 0:

@@ -138,10 +138,8 @@ dmypy.json
 #Data
 *.csv
 *.zip
-!Data/GoodReads/books.csv
-!Data/GoodReads/book_reviews.csv
-!Data/books.csv
-!Data/category-id.csv
-!Data/videos-small.csv
+!Data/GoodReads/books-small.csv
+!Data/GoodReads/tags.csv
+!Data/GoodReads/books_tags-small.csv
 
 .vim

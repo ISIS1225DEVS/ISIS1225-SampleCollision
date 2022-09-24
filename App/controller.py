@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
-# TODO: import para medir tiempo y memoria
+# TODO: lab 7, import para medir tiempo y memoria
 import time
 import tracemalloc
 import config as cf
@@ -46,34 +46,41 @@ def newController():
 # Funciones para la carga de datos
 
 
-def loadData(ctrlr):
+def loadData(ctrlr, memflag=True):
     """
     Carga los datos de los archivos y cargar los datos en la
     estructura de datos
     """
-    # TODO: modificaciones para medir el tiempo y memoria
-    # inicializa el proceso para medir memoria
-    tracemalloc.start()
-
-    # toma de tiempo y memoria al inicio del proceso
+    # TODO: lab 7, implementacion del catalogo midiendo el tiempo y memoria
+    # toma el tiempo al inicio del proceso
     start_time = getTime()
-    start_memory = getMemory()
+
+    # inicializa el proceso para medir memoria
+    if memflag is True:
+        tracemalloc.start()
+        start_memory = getMemory()
 
     loadBooks(ctrlr)
     loadTags(ctrlr)
     loadBooksTags(ctrlr)
 
-    # toma de tiempo y memoria al final del proceso
-    stop_memory = getMemory()
+    # toma el tiempo al final del proceso
     stop_time = getTime()
-    # finaliza el proceso para medir memoria
-    tracemalloc.stop()
-
-    # calculando la diferencia de tiempo y memoria
+    # calculando la diferencia en tiempo
     delta_time = deltaTime(stop_time, start_time)
-    delta_memory = deltaMemory(stop_memory, start_memory)
 
-    return delta_time, delta_memory
+    # finaliza el proceso para medir memoria
+    if memflag is True:
+        stop_memory = getMemory()
+        tracemalloc.stop()
+        # calcula la diferencia de memoria
+        delta_memory = deltaMemory(stop_memory, start_memory)
+        # respuesta con los datos de tiempo y memoria
+        return delta_time, delta_memory
+
+    else:
+        # respuesta sin medir memoria
+        return delta_time
 
 
 def loadBooks(ctrlr):
@@ -81,7 +88,7 @@ def loadBooks(ctrlr):
     Carga los libros del archivo. Por cada libro se indica al
     modelo que debe adicionarlo al catalogo.
     """
-    booksfile = cf.data_dir + 'GoodReads/books-small.csv'
+    booksfile = cf.data_dir + 'GoodReads/books.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for book in input_file:
         model.addBook(ctrlr['model'], book)
@@ -102,7 +109,7 @@ def loadBooksTags(ctrlr):
     """
     Carga la información que asocia tags con libros en el catalogo
     """
-    booktagsfile = cf.data_dir + 'GoodReads/book_tags-small.csv'
+    booktagsfile = cf.data_dir + 'GoodReads/book_tags.csv'
     input_file = csv.DictReader(open(booktagsfile, encoding='utf-8'))
     for booktag in input_file:
         model.addBookTag(ctrlr['model'], booktag)
@@ -164,39 +171,82 @@ def getBooksByTag(ctrlr, tagname):
     return books
 
 
-def getBooksYear(ctrlr, year):
+def getBooksYear(ctrlr, year, memflag=True):
     """
     Retorna los libros que fueron publicados
     en un año
     """
-    # TODO: modificaciones para medir el tiempo y memoria
+    # TODO: lab 7, implementacion de una funcion midiendo el tiempo y memoria
+    # respuesta de la funcion
     books = None
-    tracemalloc.start()
-    start_time = getTime()
-    start_memory = getMemory()
 
+    # toma el tiempo al inicio del proceso
+    start_time = getTime()
+
+    # inicializa el proceso para medir memoria
+    if memflag is True:
+        tracemalloc.start()
+        start_memory = getMemory()
+
+    # ejecutando funcion a medir
     books = model.getBooksByYear(ctrlr['model'], year)
 
-    stop_memory = getMemory()
+    # toma el tiempo al final del proceso
     stop_time = getTime()
-    tracemalloc.stop()
-
+    # calculando la diferencia en tiempo
     delta_time = deltaTime(stop_time, start_time)
-    delta_memory = deltaMemory(stop_memory, start_memory)
 
-    return books, delta_time, delta_memory
+    # finaliza el proceso para medir memoria
+    if memflag is True:
+        stop_memory = getMemory()
+        tracemalloc.stop()
+        # calcula la diferencia de memoria
+        delta_memory = deltaMemory(stop_memory, start_memory)
+        # respuesta con los datos de tiempo y memoria
+        return books, delta_time, delta_memory
+
+    else:
+        # respuesta sin medir memoria
+        return books, delta_time
 
 
-def sortBooksByYear(ctrlr, year, rank):
+def sortBooksByYear(ctrlr, year, rank, memflag=True):
     """
     Retorna los libros que fueron publicados
     en un año ordenados por rating
     """
-    # TODO completar cambios para el laboratorio 7
-    # respuesta por defecto
+    # TODO lab 7, completar cambios para medir tiempo y memoria
+    # respuesta de la funcion
     books = None
+
+    # toma el tiempo al inicio del proceso
+    start_time = getTime()
+
+    # inicializa el proceso para medir memoria
+    if memflag is True:
+        tracemalloc.start()
+        start_memory = getMemory()
+
+    # ejecutando funcion a medir
     books = model.sortBooksByYear(ctrlr['model'], year, rank)
-    return books
+
+    # toma el tiempo al final del proceso
+    stop_time = getTime()
+    # calculando la diferencia en tiempo
+    delta_time = deltaTime(stop_time, start_time)
+
+    # finaliza el proceso para medir memoria
+    if memflag is True:
+        stop_memory = getMemory()
+        tracemalloc.stop()
+        # calcula la diferencia de memoria
+        delta_memory = deltaMemory(stop_memory, start_memory)
+        # respuesta con los datos de tiempo y memoria
+        return books, delta_time, delta_memory
+
+    else:
+        # respuesta sin medir memoria
+        return books, delta_time
 
 
 # Funciones para medir tiempos de ejecucion
