@@ -115,7 +115,7 @@ def printBestBooks(books):
     Imprime la información de los mejores libros
     por promedio
     """
-    # TODO: lab 7, implementar la impresión de ranking de libros
+    # TODO: lab 7, completar la impresión de ranking de libros
     if isinstance(answer, (list, tuple)) is True:
         if len(answer) == 2:
             books = answer[0]
