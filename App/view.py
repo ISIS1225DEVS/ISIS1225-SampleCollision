@@ -97,9 +97,14 @@ def printBooksbyYear(answer):
             print('Se encontraron: ' + str(lt.size(books)) + ' Libros.')
             print('Tiempo [ms]: ', f"{time:.3f}", '||',
                   'Memoria [kB]: ', f"{memory:.3f}")
+        print("Imprimiendo los 3 primeros y 3 ultimos libros...")
+        i = 1
         for book in lt.iterator(books):
-            print('Titulo: ' + book['title'] + '  ISBN: ' +
-                  book['isbn'] + ' Rating: ' + book['average_rating'])
+            if i <= 3 or i > lt.size(books) - 3:
+                print('Titulo:', book['title'],
+                      'ISBN:', book['isbn'],
+                      'Rating:', book['average_rating'])
+            i += 1
         print("\n")
     else:
         print("No se encontraron libros.\n")
@@ -110,6 +115,7 @@ def printBestBooks(books):
     Imprime la información de los mejores libros
     por promedio
     """
+    # TODO: lab 7, implementar la impresión de ranking de libros
     if isinstance(answer, (list, tuple)) is True:
         if len(answer) == 2:
             books = answer[0]
@@ -238,8 +244,8 @@ while True:
         print("Desea observar el uso de memoria? (True/False)")
         mem = input("Respuesta: ")
         mem = castBoolean(mem)
-        answer = controller.sortBooksByYear(ctrlr, number, rank, memflag=mem)
         # TODO lab 7, completar cambios para imprimir respuesta
+        answer = controller.sortBooksByYear(ctrlr, number, rank, memflag=mem)
         printBestBooks(answer)
 
     elif int(inputs[0]) == 0:

@@ -309,8 +309,8 @@ def sortBooksByYear(catalog, year, rank):
         books_year = me.getValue(year_mp)["books"]
 
         # ajustar la muestra segun la fraccion de elementos en la lista
-        total_books = lt.size(books_year)
-        print("Total de libros en " + str(year) + ": " + str(total_books))
+        # total_books = lt.size(books_year)
+        # print("Total de libros en " + str(year) + ": " + str(total_books))
 
         # ordenando la lista
         sorted_list = sa.sort(books_year, compareratings)
