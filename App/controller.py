@@ -99,7 +99,7 @@ def loadTags(ctrlr):
     Carga todos los tags del archivo e indica al modelo
     que los adicione al catalogo
     """
-    tagsfile = cf.data_dir + 'GoodReads/tags-small.csv'
+    tagsfile = cf.data_dir + 'GoodReads/tags.csv'
     input_file = csv.DictReader(open(tagsfile, encoding='utf-8'))
     for tag in input_file:
         model.addTag(ctrlr['model'], tag)
@@ -109,7 +109,7 @@ def loadBooksTags(ctrlr):
     """
     Carga la información que asocia tags con libros en el catalogo
     """
-    booktagsfile = cf.data_dir + 'GoodReads/book_tags.csv'
+    booktagsfile = cf.data_dir + 'GoodReads/book_tags-small.csv'
     input_file = csv.DictReader(open(booktagsfile, encoding='utf-8'))
     for booktag in input_file:
         model.addBookTag(ctrlr['model'], booktag)
