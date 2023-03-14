@@ -172,7 +172,7 @@ def loadData(catalog):
     controller.loadData(catalog)
 
 
-ctrlr = None
+control = None
 # ===================================
 # Menu principal
 # ===================================
@@ -183,7 +183,7 @@ while True:
 
     if int(inputs[0]) == 1:
         print("Inicializando Catálogo ....")
-        ctrlr = newController()
+        control = newController()
 
     elif int(inputs[0]) == 2:
         # TODO: lab 7, parametros para observar el tiempo y memoria
@@ -191,10 +191,10 @@ while True:
         print("Desea observar el uso de memoria? (True/False)")
         mem = input("Respuesta: ")
         mem = castBoolean(mem)
-        answer = controller.loadData(ctrlr, memflag=mem)
-        print('Libros cargados: ' + str(controller.booksSize(ctrlr)))
-        print('Autores cargados: ' + str(controller.authorsSize(ctrlr)))
-        print('Géneros cargados: ' + str(controller.tagsSize(ctrlr)))
+        answer = controller.loadData(control, memflag=mem)
+        print('Libros cargados: ' + str(controller.booksSize(control)))
+        print('Autores cargados: ' + str(controller.authorsSize(control)))
+        print('Géneros cargados: ' + str(controller.tagsSize(control)))
         printLoadDataAnswer(answer)
 
     elif int(inputs[0]) == 3:
@@ -203,17 +203,17 @@ while True:
         print("Desea observar el uso de memoria? (True/False)")
         mem = input("Respuesta: ")
         mem = castBoolean(mem)
-        answer = controller.getBooksYear(ctrlr, int(number), memflag=mem)
+        answer = controller.getBooksYear(control, int(number), memflag=mem)
         printBooksbyYear(answer)
 
     elif int(inputs[0]) == 4:
         authorname = input("Nombre del autor a buscar: ")
-        authorinfo = controller.getBooksByAuthor(ctrlr, authorname)
+        authorinfo = controller.getBooksByAuthor(control, authorname)
         printAuthorData(authorinfo)
 
     elif int(inputs[0]) == 5:
         label = input("Etiqueta a buscar: ")
-        books = controller.getBooksByTag(ctrlr, label)
+        books = controller.getBooksByTag(control, label)
         printBooksbyTag(books)
 
     elif int(inputs[0]) == 6:

@@ -46,7 +46,7 @@ def newController():
 # Funciones para la carga de datos
 
 
-def loadData(ctrlr, memflag=True):
+def loadData(control, memflag=True):
     """
     Carga los datos de los archivos y cargar los datos en la
     estructura de datos
@@ -60,9 +60,9 @@ def loadData(ctrlr, memflag=True):
         tracemalloc.start()
         start_memory = getMemory()
 
-    loadBooks(ctrlr)
-    loadTags(ctrlr)
-    loadBooksTags(ctrlr)
+    loadBooks(control)
+    loadTags(control)
+    loadBooksTags(control)
 
     # toma el tiempo al final del proceso
     stop_time = getTime()
@@ -83,18 +83,18 @@ def loadData(ctrlr, memflag=True):
         return delta_time
 
 
-def loadBooks(ctrlr):
+def loadBooks(control):
     """
     Carga los libros del archivo. Por cada libro se indica al
     modelo que debe adicionarlo al catalogo.
     """
-    booksfile = cf.data_dir + 'GoodReads/books-small.csv'
+    booksfile = cf.data_dir + 'GoodReads/books.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for book in input_file:
-        model.addBook(ctrlr['model'], book)
+        model.addBook(control['model'], book)
 
 
-def loadTags(ctrlr):
+def loadTags(control):
     """
     Carga todos los tags del archivo e indica al modelo
     que los adicione al catalogo
@@ -102,76 +102,76 @@ def loadTags(ctrlr):
     tagsfile = cf.data_dir + 'GoodReads/tags.csv'
     input_file = csv.DictReader(open(tagsfile, encoding='utf-8'))
     for tag in input_file:
-        model.addTag(ctrlr['model'], tag)
+        model.addTag(control['model'], tag)
 
 
-def loadBooksTags(ctrlr):
+def loadBooksTags(control):
     """
     Carga la información que asocia tags con libros en el catalogo
     """
-    booktagsfile = cf.data_dir + 'GoodReads/book_tags-small.csv'
+    booktagsfile = cf.data_dir + 'GoodReads/book_tags.csv'
     input_file = csv.DictReader(open(booktagsfile, encoding='utf-8'))
     for booktag in input_file:
-        model.addBookTag(ctrlr['model'], booktag)
+        model.addBookTag(control['model'], booktag)
 
 
 # Funciones de consulta sobre el catálogo
 
 
-def getBestBooks(ctrlr, number):
+def getBestBooks(control, number):
     """
     Retorna los mejores libros según su promedio
     """
-    bestbooks = model.getBestBooks(ctrlr['model'], number)
+    bestbooks = model.getBestBooks(control['model'], number)
     return bestbooks
 
 
-def countBooksByTag(ctrlr, tag):
+def countBooksByTag(control, tag):
     """
     Retorna los libros que fueron etiquetados con el tag
     """
-    return model.countBooksByTag(ctrlr['model'], tag)
+    return model.countBooksByTag(control['model'], tag)
 
 
-def booksSize(ctrlr):
+def booksSize(control):
     """
     Numero de libros cargados al catalogo
     """
-    return model.booksSize(ctrlr['model'])
+    return model.booksSize(control['model'])
 
 
-def authorsSize(ctrlr):
+def authorsSize(control):
     """
     Numero de autores cargados al catalogo
     """
-    return model.authorsSize(ctrlr['model'])
+    return model.authorsSize(control['model'])
 
 
-def tagsSize(ctrlr):
+def tagsSize(control):
     """
     Numero de tags cargados al catalogo
     """
-    return model.tagsSize(ctrlr['model'])
+    return model.tagsSize(control['model'])
 
 
-def getBooksByAuthor(ctrlr, authorname):
+def getBooksByAuthor(control, authorname):
     """
     Retorna los libros de un autor
     """
-    authorinfo = model.getBooksByAuthor(ctrlr['model'], authorname)
+    authorinfo = model.getBooksByAuthor(control['model'], authorname)
     return authorinfo
 
 
-def getBooksByTag(ctrlr, tagname):
+def getBooksByTag(control, tagname):
     """
     Retorna los libros que han sido marcados con
     una etiqueta
     """
-    books = model.getBooksByTag(ctrlr['model'], tagname)
+    books = model.getBooksByTag(control['model'], tagname)
     return books
 
 
-def getBooksYear(ctrlr, year, memflag=True):
+def getBooksYear(control, year, memflag=True):
     """
     Retorna los libros que fueron publicados
     en un año
@@ -189,7 +189,7 @@ def getBooksYear(ctrlr, year, memflag=True):
         start_memory = getMemory()
 
     # ejecutando funcion a medir
-    books = model.getBooksByYear(ctrlr['model'], year)
+    books = model.getBooksByYear(control['model'], year)
 
     # toma el tiempo al final del proceso
     stop_time = getTime()
@@ -210,7 +210,7 @@ def getBooksYear(ctrlr, year, memflag=True):
         return books, delta_time
 
 
-def sortBooksByYear(ctrlr, year, rank, memflag=True):
+def sortBooksByYear(control, year, rank, memflag=True):
     """
     Retorna los libros que fueron publicados
     en un año ordenados por rating
